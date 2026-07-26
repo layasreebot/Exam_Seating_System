@@ -1,0 +1,101 @@
+record_id,exam_date,session,hall,seat_no,student_id,subject,invigilator,student_attendance
+REC001,2026-05-15,Morning,Hall C,C-16,STU108,Computer Science,Prof. Charles Xavier,Present
+REC002,2026-07-09,Morning,Gymnasium,G-03,STU101,Mathematics,Dr. Ashwani Sekar,Present
+REC003,2026-07-17,Morning,Hall B,B-35,STU114,Computer Science,Dr. Rupert Smith,Present
+REC004,2026-05-01,Morning,Gymnasium,G-22,STU109,Computer Science,Dr. Ashwani Sekar,Absent
+REC005,2026-06-13,Morning,Hall A,A-25,STU104,Physics,Dr. Robert Smith,Present
+REC006,2026-05-06,Afternoon,Hall A,A-25,STU103,Biology,Dr. Robert Smith,Present
+REC007,2026-07-19,Afternoon,Hall B,B-05,STU102,Computer Science,Dr. Robert Smith,Absent
+REC008,2026-05-30,Morning,Gymnasium,G-18,STU115,Physics,Dr. Ashwani Sekar,Present
+REC009,2026-05-27,Afternoon,Hall A,A-39,STU106,Biology,Prof. Charles Xavier,Present
+REC010,2026-06-29,Afternoon,Hall C,C-36,STU108,Physics,Dr. Ashwini Sekar,Present
+REC011,2026-05-05,Afternoon,Gymnasium,G-18,STU103,Computer Science,Dr. Jane Doe,Present
+REC012,2026-06-10,Morning,Gymnasium,G-26,STU115,Computer Science,Dr. Robert Smith,Present
+REC013,2026-07-11,Afternoon,Gymnasium,G-38,STU113,Physics,Dr. Ashwani Sekar,Absent
+REC014,2026-05-18,Afternoon,Hall A,A-04,STU104,Computer Science,Prof. Charles Xavier,Present
+REC015,2026-06-24,Morning,Gymnasium,G-25,STU120,Chemistry,Dr. Jane Doe,Present
+REC016,2026-07-10,Morning,Hall A,A-35,STU109,Physics,Dr. Ashwini Sekar,Present
+REC017,2026-05-21,Afternoon,Hall A,A-17,STU117,Computer Science,Dr. Jane Doe,Present
+REC018,2026-07-20,Afternoon,Hall B,B-10,STU112,Computer Science,Dr. Jane Doe,Absent
+REC019,2026-07-07,Morning,Hall C,C-32,STU101,Mathematics,Dr. Robert Smith,Absent
+REC020,2026-06-09,Morning,Hall A,A-16,STU119,Mathematics,Dr. Ashwini Sekar,Present
+REC021,2026-05-09,Morning,Hall B,B-31,STU118,Computer Science,Dr. Robert Smith,Present
+REC022,2026-07-17,Afternoon,Hall B,B-35,STU107,Physics,Dr. Rupert Smith,Absent
+REC023,2026-06-17,Afternoon,Gymnasium,G-08,STU108,Computer Science,Dr. Ashwini Sekar,Present
+REC024,2026-07-15,Morning,Hall B,B-01,STU103,Mathematics,Dr. Ashwani Sekar,Present
+REC025,2026-05-05,Afternoon,Hall A,A-33,STU108,Physics,Prof. Charles Xavier,Absent
+REC026,2026-07-09,Morning,Gymnasium,G-16,STU116,Chemistry,Dr. Ashwani Sekar,Present
+REC027,2026-06-25,Afternoon,Gymnasium,G-27,STU115,Mathematics,Prof. Charles Xavier,Present
+REC028,2026-05-13,Morning,Gymnasium,G-22,STU104,Computer Science,Dr. Ashwani Sekar,Present
+REC029,2026-06-27,Morning,Gymnasium,G-12,STU109,Chemistry,Dr. Ashwani Sekar,Present
+REC030,2026-05-10,Afternoon,Hall A,A-04,STU118,Mathematics,Dr. Ashwini Sekar,Absent
+REC031,2026-05-31,Morning,Gymnasium,G-32,STU116,Computer Science,Dr. Rupert Smith,Absent
+REC032,2026-05-22,Afternoon,Hall A,A-25,STU109,Chemistry,Dr. Robert Smith,Present
+REC033,2026-07-11,Afternoon,Hall B,B-13,STU110,Computer Science,Dr. Ashwini Sekar,Present
+REC034,2026-07-09,Morning,Hall C,C-04,STU102,Biology,Dr. Rupert Smith,Present
+REC035,2026-07-07,Morning,Hall A,A-33,STU103,Computer Science,Dr. Ashwini Sekar,Present
+REC036,2026-05-31,Afternoon,Hall A,A-37,STU108,Biology,Dr. Jane Doe,Present
+REC037,2026-05-11,Afternoon,Hall C,C-17,STU107,Physics,Dr. Ashwani Sekar,Present
+REC038,2026-05-17,Afternoon,Gymnasium,G-21,STU103,Mathematics,Dr. Rupert Smith,Present
+REC039,2026-07-12,Morning,Hall A,A-35,STU107,Biology,Dr. Robert Smith,Present
+REC040,2026-06-14,Morning,Hall B,B-24,STU110,Computer Science,Dr. Rupert Smith,Present
+REC041,2026-06-08,Morning,Hall C,C-07,STU105,Physics,Dr. Ashwini Sekar,Absent
+REC042,2026-07-10,Morning,Hall C,C-19,STU120,Computer Science,Prof. Charles Xavier,Present
+REC043,2026-06-03,Afternoon,Hall C,C-04,STU103,Chemistry,Dr. Robert Smith,Present
+REC044,2026-06-12,Morning,Hall C,C-11,STU115,Biology,Prof. Charles Xavier,Present
+REC045,2026-05-02,Morning,Hall A,A-10,STU118,Mathematics,Dr. Robert Smith,Present
+REC046,2026-05-19,Afternoon,Hall B,B-03,STU110,Physics,Dr. Ashwini Sekar,Absent
+REC047,2026-05-27,Morning,Hall A,A-23,STU118,Chemistry,Dr. Jane Doe,Present
+REC048,2026-05-31,Morning,Hall B,B-27,STU101,Computer Science,Prof. Charles Xavier,Absent
+REC049,2026-06-22,Morning,Hall C,C-11,STU104,Chemistry,Dr. Ashwini Sekar,Present
+REC050,2026-05-29,Morning,Gymnasium,G-23,STU110,Computer Science,Dr. Ashwani Sekar,Present
+REC051,2026-05-25,Afternoon,Hall C,C-18,STU103,Physics,Dr. Robert Smith,Present
+REC052,2026-06-21,Afternoon,Hall A,A-08,STU109,Computer Science,Dr. Jane Doe,Absent
+REC053,2026-06-03,Morning,Hall A,A-39,STU114,Physics,Prof. Charles Xavier,Present
+REC054,2026-06-25,Morning,Gymnasium,G-37,STU107,Physics,Dr. Ashwini Sekar,Present
+REC055,2026-05-01,Morning,Hall C,C-28,STU103,Physics,Dr. Jane Doe,Present
+REC056,2026-05-16,Afternoon,Hall C,C-27,STU111,Chemistry,Prof. Charles Xavier,Present
+REC057,2026-05-17,Morning,Gymnasium,G-25,STU106,Biology,Dr. Jane Doe,Present
+REC058,2026-07-10,Morning,Hall C,C-19,STU107,Chemistry,Dr. Jane Doe,Present
+REC059,2026-06-11,Afternoon,Gymnasium,G-29,STU107,Biology,Dr. Rupert Smith,Present
+REC060,2026-05-22,Morning,Hall C,C-33,STU120,Physics,Dr. Ashwini Sekar,Absent
+REC061,2026-05-31,Afternoon,Hall B,B-13,STU105,Mathematics,Dr. Ashwini Sekar,Present
+REC062,2026-06-30,Morning,Gymnasium,G-27,STU119,Computer Science,Prof. Charles Xavier,Present
+REC063,2026-07-03,Afternoon,Hall B,B-10,STU101,Mathematics,Dr. Rupert Smith,Present
+REC064,2026-07-06,Afternoon,Hall A,A-36,STU108,Mathematics,Dr. Rupert Smith,Present
+REC065,2026-06-29,Afternoon,Gymnasium,G-40,STU117,Chemistry,Dr. Jane Doe,Present
+REC066,2026-05-21,Afternoon,Gymnasium,G-17,STU108,Physics,Dr. Jane Doe,Absent
+REC067,2026-05-31,Afternoon,Gymnasium,G-05,STU110,Computer Science,Dr. Robert Smith,Present
+REC068,2026-07-09,Morning,Hall B,B-10,STU108,Chemistry,Prof. Charles Xavier,Present
+REC069,2026-05-28,Morning,Gymnasium,G-27,STU111,Biology,Dr. Rupert Smith,Present
+REC070,2026-05-27,Afternoon,Gymnasium,G-38,STU101,Biology,Dr. Rupert Smith,Present
+REC071,2026-06-15,Afternoon,Gymnasium,G-27,STU118,Biology,Dr. Jane Doe,Present
+REC072,2026-07-02,Morning,Hall C,C-28,STU116,Mathematics,Dr. Rupert Smith,Present
+REC073,2026-06-21,Morning,Gymnasium,G-09,STU120,Biology,Dr. Ashwini Sekar,Absent
+REC074,2026-07-15,Morning,Hall A,A-28,STU105,Chemistry,Dr. Ashwani Sekar,Present
+REC075,2026-06-18,Afternoon,Hall B,B-30,STU111,Physics,Dr. Rupert Smith,Present
+REC076,2026-06-23,Afternoon,Hall A,A-31,STU101,Biology,Dr. Ashwini Sekar,Absent
+REC077,2026-06-14,Morning,Hall A,A-03,STU101,Computer Science,Dr. Ashwani Sekar,Present
+REC078,2026-07-19,Morning,Hall B,B-09,STU116,Mathematics,Dr. Jane Doe,Absent
+REC079,2026-06-29,Afternoon,Hall C,C-11,STU120,Biology,Prof. Charles Xavier,Present
+REC080,2026-05-21,Afternoon,Hall A,A-38,STU101,Physics,Dr. Jane Doe,Present
+REC081,2026-06-18,Afternoon,Hall B,B-05,STU119,Computer Science,Dr. Ashwini Sekar,Present
+REC082,2026-06-08,Morning,Hall A,A-23,STU118,Chemistry,Prof. Charles Xavier,Present
+REC083,2026-07-04,Afternoon,Hall A,A-27,STU116,Mathematics,Dr. Rupert Smith,Absent
+REC084,2026-06-28,Morning,Gymnasium,G-12,STU117,Physics,Dr. Jane Doe,Absent
+REC085,2026-07-08,Afternoon,Gymnasium,G-28,STU119,Physics,Dr. Robert Smith,Absent
+REC086,2026-05-12,Afternoon,Gymnasium,G-16,STU115,Biology,Dr. Jane Doe,Present
+REC087,2026-06-13,Morning,Gymnasium,G-21,STU106,Chemistry,Dr. Ashwani Sekar,Present
+REC088,2026-06-03,Afternoon,Hall C,C-39,STU109,Biology,Dr. Ashwini Sekar,Present
+REC089,2026-05-25,Morning,Hall B,B-27,STU116,Biology,Dr. Ashwani Sekar,Present
+REC090,2026-07-02,Afternoon,Hall A,A-06,STU110,Computer Science,Dr. Rupert Smith,Present
+REC091,2026-06-09,Afternoon,Gymnasium,G-36,STU117,Physics,Dr. Rupert Smith,Absent
+REC092,2026-07-10,Afternoon,Hall C,C-30,STU109,Physics,Dr. Robert Smith,Present
+REC093,2026-05-25,Afternoon,Hall A,A-35,STU106,Computer Science,Dr. Ashwani Sekar,Present
+REC094,2026-06-05,Afternoon,Hall A,A-13,STU110,Computer Science,Dr. Robert Smith,Present
+REC095,2026-05-02,Morning,Hall C,C-03,STU102,Biology,Dr. Robert Smith,Present
+REC096,2026-05-17,Afternoon,Hall A,A-01,STU119,Physics,Dr. Rupert Smith,Present
+REC097,2026-06-13,Morning,Hall A,A-17,STU116,Mathematics,Dr. Ashwini Sekar,Present
+REC098,2026-06-15,Morning,Hall A,A-15,STU112,Chemistry,,Present
+REC099,2026-06-16,Afternoon,Hall B,,STU114,Biology,Dr. Jane Doe,Absent
+REC100,2026-12-25,Morning,Storage Room C,Z-99,STU999,Astrology,Dr. Orphan,Absent

@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam Seating & Duty Register Assistant</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons for premium feel -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        :root {
+            --bg-color: #0b0c10;
+            --sidebar-bg: rgba(15, 17, 26, 0.7);
+            --card-bg: rgba(25, 30, 48, 0.45);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --accent-primary: #8e2de2;
+            --accent-secondary: #4a00e0;
+            --accent-cyan: #00f2fe;
+            --text-main: #f8fafc;
+            --text-secondary: #94a3b8;
+            --glow-color: rgba(142, 45, 226, 0.4);
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(142, 45, 226, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(0, 242, 254, 0.1) 0%, transparent 40%);
+            color: var(--text-main);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+        }
+
+        /* Sidebar styling */
+        .sidebar {
+            width: 320px;
+            background: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            backdrop-filter: blur(12px);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            height: 100%;
+            z-index: 10;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: 0 0 20px rgba(142, 45, 226, 0.5);
+        }
+
+        .logo-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.3rem;
+            background: linear-gradient(135deg, #00f2fe, #4facfe, #8e2de2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-secondary);
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        /* Metrics grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .metric-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 1rem;
+            border-radius: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            transition: all 0.3s ease;
+        }
+
+        .metric-card:hover {
+            border-color: rgba(142, 45, 226, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .metric-val {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .metric-lbl {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        /* Login Selector Panel */
+        .demo-login-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 1rem;
+        }
+
+        .demo-select {
+            width: 100%;
+            background: #131722;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 0.6rem;
+            border-radius: 8px;
+            outline: none;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+        }
+
+        .demo-select:focus {
+            border-color: var(--accent-primary);
+        }
+
+        /* Main Workspace */
+        .main-content {
+            flex: 1;
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        /* Top Panel - Authentication state */
+        .auth-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.5rem;
+            border-radius: 18px;
+            background: linear-gradient(135deg, rgba(142, 45, 226, 0.08) 0%, rgba(74, 0, 224, 0.03) 100%);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .auth-input-wrapper {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .input-glow-wrapper {
+            position: relative;
+            flex: 1;
+        }
+
+        .text-input {
+            width: 100%;
+            background: #111420;
+            border: 1px solid var(--border-color);
+            padding: 0.8rem 1rem;
+            padding-left: 2.5rem;
+            color: var(--text-main);
+            border-radius: 10px;
+            outline: none;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .text-input:focus {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 15px var(--glow-color);
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 0.9rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            width: 18px;
+            height: 18px;
+        }
+
+        .btn-action {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border: none;
+            color: white;
+            padding: 0.8rem 1.8rem;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(142, 45, 226, 0.35);
+            transition: all 0.3s ease;
+        }
+
+        .btn-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(142, 45, 226, 0.55);
+        }
+
+        .profile-badge {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .profile-details h3 {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--text-main);
+        }
+
+        .profile-details span {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            background: rgba(142, 45, 226, 0.2);
+            padding: 0.2rem 0.5rem;
+            border-radius: 6px;
+            margin-top: 0.25rem;
+            display: inline-block;
+        }
+
+        /* Suggestions Area */
+        .suggestions-box {
+            background: rgba(231, 76, 60, 0.05);
+            border: 1px solid rgba(231, 76, 60, 0.2);
+            padding: 1rem;
+            border-radius: 12px;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .suggestions-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .suggestion-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+        }
+
+        .suggestion-btn:hover {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+        }
+
+        /* Assistant Workspace (Visible after Auth) */
+        .assistant-workspace {
+            display: none;
+            flex-direction: column;
+            gap: 2rem;
+            flex: 1;
+        }
+
+        /* Query Input area */
+        .query-box {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .sample-queries {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .sample-btn {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .sample-btn:hover {
+            background: rgba(142, 45, 226, 0.12);
+            color: var(--text-main);
+            border-color: var(--accent-primary);
+            transform: translateY(-1px);
+        }
+
+        /* Results Display */
+        .results-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* Glowing Custom Record Cards */
+        .record-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(8px);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .record-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(142, 45, 226, 0.4);
+            box-shadow: 0 12px 40px 0 rgba(142, 45, 226, 0.15);
+        }
+
+        .record-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-primary));
+        }
+
+        /* Warning styles for missing fields */
+        .record-card.missing-fields::before {
+            background: linear-gradient(90deg, var(--warning-color), #d35400);
+        }
+
+        .card-header-badge {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .record-id-lbl {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--accent-cyan);
+        }
+
+        .attendance-badge {
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.25rem 0.6rem;
+            border-radius: 20px;
+            text-transform: uppercase;
+        }
+
+        .attendance-badge.present {
+            background: rgba(46, 204, 113, 0.2);
+            color: #2ecc71;
+            border: 1px solid rgba(46, 204, 113, 0.3);
+        }
+
+        .attendance-badge.absent {
+            background: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+            border: 1px solid rgba(231, 76, 60, 0.3);
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .card-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            font-size: 0.85rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 1rem;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.15rem;
+        }
+
+        .detail-lbl {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .detail-val {
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        .detail-val.alert-val {
+            color: var(--warning-color);
+            font-style: italic;
+        }
+
+        /* Alert Callout for missing entries */
+        .card-warning {
+            background: rgba(243, 156, 18, 0.1);
+            border: 1px solid rgba(243, 156, 18, 0.2);
+            border-radius: 8px;
+            padding: 0.6rem;
+            font-size: 0.8rem;
+            color: #f1c40f;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Refusal Message Styling */
+        .refusal-message {
+            background: linear-gradient(135deg, rgba(230, 126, 34, 0.1) 0%, rgba(211, 84, 0, 0.05) 100%);
+            border: 1px solid rgba(230, 126, 34, 0.3);
+            border-radius: 16px;
+            padding: 1.5rem;
+            max-width: 650px;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .refusal-hdr {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--warning-color);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .refusal-text {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--text-main);
+        }
+
+        .refusal-list {
+            margin-left: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* General Helper Info */
+        .info-box {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 250px;
+            color: var(--text-secondary);
+            gap: 1rem;
+            border: 2px dashed var(--border-color);
+            border-radius: 18px;
+        }
+
+        .info-box i {
+            width: 48px;
+            height: 48px;
+            color: rgba(142, 45, 226, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SIDEBAR PANEL -->
+    <div class="sidebar">
+        <div class="logo-area">
+            <div class="logo-icon">
+                <i data-lucide="graduation-cap"></i>
+            </div>
+            <div class="logo-title">EXAM REGISTER</div>
+        </div>
+
+        <div>
+            <div class="section-title">Database Stats</div>
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-val" id="stat-records">100</div>
+                    <div class="metric-lbl">Records</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-val" id="stat-students">21</div>
+                    <div class="metric-lbl">Students</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-val" id="stat-invigilators">7</div>
+                    <div class="metric-lbl">Staff</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-val" id="stat-halls">5</div>
+                    <div class="metric-lbl">Halls</div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div class="section-title">Quick Demo Login</div>
+            <div class="demo-login-panel">
+                <label style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.25rem;">Select Test Account:</label>
+                <select class="demo-select" id="demo-user-select" onchange="handleDemoSelect()">
+                    <option value="">-- Choose User --</option>
+                    <option value="STU105">Student: STU105 (Normal/Absences)</option>
+                    <option value="STU112">Student: STU112 (REG098 - Missing Staff)</option>
+                    <option value="STU114">Student: STU114 (REG099 - Missing Seat)</option>
+                    <option value="STU999">Student: STU999 (REG100 - Invalid)</option>
+                    <option value="Dr. Ashwini">Invigilator: Dr. Ashwini </option>
+                    <option value="Dr. Ashwani">Invigilator: Dr. Ashwani  (Similar)</option>
+                    <option value="Dr. Ram">Invigilator: Dr. Ram (REG100 - Christmas)</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN PANEL -->
+    <div class="main-content">
+        <!-- AUTH PANEL -->
+        <div class="auth-container">
+            <div class="auth-input-wrapper" id="auth-form">
+                <div class="input-glow-wrapper">
+                    <i data-lucide="user" class="input-icon"></i>
+                    <input type="text" class="text-input" id="identity-input" placeholder="Enter Student ID (e.g. STU105) or Staff Name..." onkeydown="if(event.key==='Enter') login()">
+                </div>
+                <button class="btn-action" onclick="login()">Log In</button>
+            </div>
+
+            <!-- Profile Badge (Swapped in JS on success) -->
+            <div class="profile-badge" id="profile-area" style="display: none;">
+                <div style="background: linear-gradient(135deg, #00f2fe, #4facfe); width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700;" id="profile-avatar">S</div>
+                <div class="profile-details">
+                    <h3 id="profile-name">STU105</h3>
+                    <span id="profile-role">Student</span>
+                </div>
+                <button class="btn-action" onclick="logout()" style="background: rgba(255,255,255,0.05); color: var(--text-main); border: 1px solid var(--border-color); box-shadow: none; margin-left: 1.5rem; padding: 0.5rem 1rem; font-size: 0.85rem;">Logout</button>
+            </div>
+        </div>
+
+        <!-- TYPO SUGGESTIONS CALLOUT -->
+        <div class="suggestions-box" id="typo-box">
+            <div style="color: #e74c3c; font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem;">
+                <i data-lucide="alert-circle" style="width: 18px; height: 18px;"></i>
+                <span>Identity Not Recognized</span>
+            </div>
+            <div class="suggestions-list" id="typo-suggestions">
+                <!-- Suggestions rendered here -->
+            </div>
+        </div>
+
+        <!-- ASSISTANT CONTAINER -->
+        <div class="assistant-workspace" id="workspace">
+            <div class="query-box">
+                <div class="input-glow-wrapper">
+                    <i data-lucide="message-square" class="input-icon"></i>
+                    <input type="text" class="text-input" id="query-input" placeholder="Type question (e.g. Where is my seat?)" style="padding-left: 2.5rem;" onkeydown="if(event.key==='Enter') submitQuery()">
+                </div>
+                <div class="sample-queries" id="sample-tags">
+                    <!-- Sample buttons injected dynamically depending on role -->
+                </div>
+            </div>
+
+            <!-- Query results -->
+            <div class="results-container" id="results-area">
+                <div class="info-box">
+                    <i data-lucide="search"></i>
+                    <span>Ask a question above to look up seating and duty details.</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- INITIAL EMPTY INFO -->
+        <div id="initial-info" style="display: flex; flex-direction: column; justify-content: center; align-items: center; flex: 1; gap: 1rem; color: var(--text-secondary);">
+            <i data-lucide="lock" style="width: 48px; height: 48px; color: rgba(255,255,255,0.1);"></i>
+            <span>Log in with your ID/Name to access the register search.</span>
+        </div>
+    </div>
+
+    <!-- Import Generated JSON data -->
+    <script src="js/data.js"></script>
+    
+    <script>
+        // Core Assistant Engine inside Javascript
+        let currentUser = null;
+        let currentRole = null;
+
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Calculate database metrics on start
+        function initMetrics() {
+            if (typeof examRecords === 'undefined') return;
+            const recordsCount = examRecords.length;
+            const students = new Set();
+            const invigilators = new Set();
+            const halls = new Set();
+            
+            examRecords.forEach(r => {
+                if (r.student_id) students.add(r.student_id);
+                if (r.invigilator) invigilators.add(r.invigilator);
+                if (r.hall) halls.add(r.hall);
+            });
+            
+            document.getElementById('stat-records').innerText = recordsCount;
+            document.getElementById('stat-students').innerText = students.size;
+            document.getElementById('stat-invigilators').innerText = invigilators.size;
+            document.getElementById('stat-halls').innerText = halls.size;
+        }
+
+        // Levenshtein edit distance
+        function getLevenshtein(s1, s2) {
+            if (s1.length < s2.length) return getLevenshtein(s2, s1);
+            if (s2.length === 0) return s1.length;
+            let prev = Array.from({length: s2.length + 1}, (_, i) => i);
+            for (let i = 0; i < s1.length; i++) {
+                let curr = [i + 1];
+                for (let j = 0; j < s2.length; j++) {
+                    let ins = prev[j + 1] + 1;
+                    let del = curr[j] + 1;
+                    let sub = prev[j] + (s1[i] !== s2[j] ? 1 : 0);
+                    curr.push(Math.min(ins, del, sub));
+                }
+                prev = curr;
+            }
+            return prev[prev.length - 1];
+        }
+
+        function normaliseText(text) {
+            if (!text) return "";
+            return text.trim().toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]/g, "").replace(/\s+/g, " ");
+        }
+
+        function matchWord(word, targetKeywords) {
+            for (let kw of targetKeywords) {
+                if (word === kw) return true;
+                if (kw.length >= 4 && word.length >= 3) {
+                    if (getLevenshtein(word, kw) <= 1) return true;
+                }
+            }
+            return false;
+        }
+
+        // Identity check
+        function verifyUser(idInput) {
+            idInput = idInput.trim().toUpperCase();
+            if (!idInput) return null;
+            
+            // Check student
+            for (let r of examRecords) {
+                if (r.student_id.toUpperCase() === idInput) {
+                    return { role: "Student", id: r.student_id };
+                }
+            }
+            
+            // Check invigilator
+            const invigNames = new Set(examRecords.map(r => r.invigilator.trim()).filter(Boolean));
+            for (let name of invigNames) {
+                if (name.toUpperCase() === idInput) {
+                    return { role: "Invigilator", id: name };
+                }
+            }
+            return null;
+        }
+
+        // Suggest similar names on typo
+        function getSuggestions(idInput) {
+            idInput = idInput.trim().toLowerCase();
+            const studentIds = new Set(examRecords.map(r => r.student_id.trim()).filter(Boolean));
+            const invigNames = new Set(examRecords.map(r => r.invigilator.trim()).filter(Boolean));
+            
+            const results = [];
+            
+            studentIds.forEach(id => {
+                if (id.toLowerCase().includes(idInput) || getLevenshtein(idInput, id.toLowerCase()) <= 2) {
+                    results.push({ name: id, display: `Student ID: ${id}` });
+                }
+            });
+            
+            invigNames.forEach(name => {
+                if (name.toLowerCase().includes(idInput) || getLevenshtein(idInput, name.toLowerCase()) <= 3) {
+                    results.push({ name: name, display: `Staff: ${name}` });
+                }
+            });
+            
+            return results.slice(0, 5);
+        }
+
+        // Login Handler
+        function login(forcedId = null) {
+            const inputVal = forcedId || document.getElementById('identity-input').value;
+            const res = verifyUser(inputVal);
+            const typoBox = document.getElementById('typo-box');
+            
+            if (res) {
+                currentUser = res.id;
+                currentRole = res.role;
+                typoBox.style.display = 'none';
+                
+                // Update UI state
+                document.getElementById('auth-form').style.display = 'none';
+                
+                const profileArea = document.getElementById('profile-area');
+                profileArea.style.display = 'flex';
+                document.getElementById('profile-name').innerText = currentUser;
+                document.getElementById('profile-role').innerText = currentRole;
+                document.getElementById('profile-avatar').innerText = currentUser.substring(0,2).toUpperCase();
+                
+                document.getElementById('initial-info').style.display = 'none';
+                document.getElementById('workspace').style.display = 'flex';
+                
+                // Inject sample query tags
+                renderSampleQueries();
+                
+                // Clear result area
+                document.getElementById('results-area').innerHTML = `
+                    <div class="info-box">
+                        <i data-lucide="search"></i>
+                        <span>Ask a question above to look up your seating and duty details.</span>
+                    </div>
+                `;
+                lucide.createIcons();
+            } else {
+                // Show typo suggestions
+                const suggestions = getSuggestions(inputVal);
+                if (suggestions.length > 0 && inputVal.trim()) {
+                    typoBox.style.display = 'block';
+                    const list = document.getElementById('typo-suggestions');
+                    list.innerHTML = '';
+                    suggestions.forEach(s => {
+                        list.innerHTML += `<button class="suggestion-btn" onclick="login('${s.name}')">${s.display}</button>`;
+                    });
+                } else if (inputVal.trim()) {
+                    typoBox.style.display = 'block';
+                    document.getElementById('typo-suggestions').innerHTML = '<span style="font-size:0.85rem; color:var(--text-secondary);">No similar identities found. Check spelling.</span>';
+                }
+            }
+        }
+
+        function handleDemoSelect() {
+            const sel = document.getElementById('demo-user-select').value;
+            if (sel) {
+                document.getElementById('identity-input').value = sel;
+                login(sel);
+            }
+        }
+
+        function logout() {
+            currentUser = null;
+            currentRole = null;
+            document.getElementById('auth-form').style.display = 'flex';
+            document.getElementById('profile-area').style.display = 'none';
+            document.getElementById('initial-info').style.display = 'flex';
+            document.getElementById('workspace').style.display = 'none';
+            document.getElementById('identity-input').value = '';
+            document.getElementById('demo-user-select').value = '';
+        }
+
+        // Render suggested questions
+        function renderSampleQueries() {
+            const container = document.getElementById('sample-tags');
+            container.innerHTML = '';
+            
+            const studentQs = [
+                "Where is my seat?",
+                "When is my exam?",
+                "What subject is my exam?",
+                "Who is my invigilator?"
+            ];
+            const staffQs = [
+                "When is my duty?",
+                "Which hall am I invigilating?"
+            ];
+            
+            const queries = currentRole === "Student" ? studentQs : staffQs;
+            queries.forEach(q => {
+                container.innerHTML += `<button class="sample-btn" onclick="runSampleQuery('${q}')">${q}</button>`;
+            });
+        }
+
+        function runSampleQuery(qText) {
+            document.getElementById('query-input').value = qText;
+            submitQuery();
+        }
+
+        // Intent Match and Execute Query
+        function submitQuery() {
+            const queryVal = document.getElementById('query-input').value;
+            const normQuery = normaliseText(queryVal);
+            const resultsArea = document.getElementById('results-area');
+            
+            if (!normQuery) {
+                renderRefusal(resultsArea, "I cannot answer an empty message. Please ask a valid question.");
+                return;
+            }
+            
+            const intent = classifyIntent(normQuery);
+            if (!intent) {
+                renderRefusal(resultsArea, "I am not confident of what you are asking. Please rephrase your query.");
+                return;
+            }
+            
+            // Get user specific records
+            const userRecords = examRecords.filter(r => {
+                if (currentRole === "Student") return r.student_id === currentUser;
+                if (currentRole === "Invigilator") return r.invigilator === currentUser;
+                return false;
+            });
+            
+            if (userRecords.length === 0) {
+                resultsArea.innerHTML = `<div class="info-box"><i data-lucide="frown"></i><span>No seating or duty records found in the database.</span></div>`;
+                lucide.createIcons();
+                return;
+            }
+            
+            renderRecords(resultsArea, userRecords, intent);
+        }
+
+        function classifyIntent(normQuery) {
+            const words = normQuery.split(" ");
+            
+            const studentIntents = {
+                "get_seat_and_hall": ["seat", "seating", "sit", "places", "chair", "number", "hall", "room", "classroom", "where", "location", "go"],
+                "get_exam_schedule": ["when", "date", "time", "schedule", "day", "calendar", "session", "morning", "afternoon", "hour"],
+                "get_exam_subject": ["subject", "course", "exam", "test", "class", "write", "writing", "registered"],
+                "get_invigilator": ["invigilator", "teacher", "supervisor", "who", "staff", "monitoring", "supervising"]
+            };
+            
+            const invigilatorIntents = {
+                "get_duty_schedule": ["when", "date", "time", "schedule", "day", "calendar", "session", "shift", "duties", "duty", "invigilate", "supervise"],
+                "get_duty_hall": ["where", "hall", "room", "classroom", "location", "place", "assigned", "supervising"]
+            };
+            
+            const targetIntents = currentRole === "Student" ? studentIntents : invigilatorIntents;
+            const scores = {};
+            
+            for (let intent in targetIntents) {
+                let score = 0;
+                words.forEach(w => {
+                    if (matchWord(w, targetIntents[intent])) score++;
+                });
+                if (score > 0) scores[intent] = score;
+            }
+            
+            const keys = Object.keys(scores);
+            if (keys.length === 0) return null;
+            
+            // Sort by score
+            keys.sort((a, b) => scores[b] - scores[a]);
+            
+            // Resolve tie
+            if (keys.length > 1 && scores[keys[0]] === scores[keys[1]]) {
+                if (currentRole === "Student") {
+                    if (words.includes("where") || words.includes("seat")) return "get_seat_and_hall";
+                    if (words.includes("when") || words.includes("date")) return "get_exam_schedule";
+                } else {
+                    if (words.includes("where") || words.includes("hall")) return "get_duty_hall";
+                    if (words.includes("when") || words.includes("date")) return "get_duty_schedule";
+                }
+                return null; // unresolved tie
+            }
+            
+            return keys[0];
+        }
+
+        // Render Refusal Path
+        function renderRefusal(container, errorText) {
+            const studentQs = [
+                "Where is my seat or hall assignment? (e.g. 'Where is my seat?')",
+                "When my exam is scheduled? (e.g. 'When is my exam?')",
+                "What subject I am writing? (e.g. 'What subject is my exam?')",
+                "Who is invigilating my exam? (e.g. 'Who is my invigilator?')"
+            ];
+            const staffQs = [
+                "When is my invigilation duty? (e.g. 'When is my duty?')",
+                "Which hall I am supervising? (e.g. 'Which hall am am I supervising?')"
+            ];
+            
+            const list = currentRole === "Student" ? studentQs : staffQs;
+            let listHtml = '';
+            list.forEach(item => {
+                listHtml += `<li>${item}</li>`;
+            });
+            
+            container.innerHTML = `
+                <div class="refusal-message">
+                    <div class="refusal-hdr">
+                        <i data-lucide="help-circle"></i>
+                        <span>Query Refusal</span>
+                    </div>
+                    <div class="refusal-text">${errorText}</div>
+                    <div style="font-size:0.85rem; font-weight:700; color:var(--text-main); margin-top:0.5rem;">Suggested Questions:</div>
+                    <ul class="refusal-list">
+                        ${listHtml}
+                    </ul>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        // Render records into grids
+        function renderRecords(container, records, intent) {
+            let html = '<div class="card-grid">';
+            
+            records.forEach(r => {
+                const hasMissing = !r.seat_no || !r.invigilator;
+                const cardClass = hasMissing ? "record-card missing-fields" : "record-card";
+                
+                const seatVal = r.seat_no || "[Not Assigned]";
+                const hallVal = r.hall || "[Not Assigned]";
+                const subjectVal = r.subject || "[Unknown Subject]";
+                const dateVal = r.exam_date || "[TBD]";
+                const sessionVal = r.session || "[TBD]";
+                const staffVal = r.invigilator || "[Not Assigned]";
+                
+                // Compute highlight based on intent
+                let seatClass = "", hallClass = "", dateClass = "", subjectClass = "", staffClass = "";
+                if (intent === "get_seat_and_hall") {
+                    seatClass = "style='color: var(--accent-cyan); font-weight:700;'";
+                    hallClass = "style='color: var(--accent-cyan); font-weight:700;'";
+                } else if (intent === "get_exam_schedule") {
+                    dateClass = "style='color: var(--accent-cyan); font-weight:700;'";
+                } else if (intent === "get_exam_subject") {
+                    subjectClass = "style='color: var(--accent-cyan); font-weight:700;'";
+                } else if (intent === "get_invigilator") {
+                    staffClass = "style='color: var(--accent-cyan); font-weight:700;'";
+                } else if (intent === "get_duty_schedule") {
+                    dateClass = "style='color: var(--accent-cyan); font-weight:700;'";
+                } else if (intent === "get_duty_hall") {
+                    hallClass = "style='color: var(--accent-cyan); font-weight:700;'";
+                    subjectClass = "style='color: var(--accent-cyan); font-weight:700;'";
+                }
+                
+                let warningHtml = '';
+                if (hasMissing) {
+                    warningHtml = `
+                        <div class="card-warning">
+                            <i data-lucide="alert-triangle" style="width:14px; height:14px;"></i>
+                            <span>Details unassigned. Please check back later.</span>
+                        </div>
+                    `;
+                }
+
+                const attendanceClass = r.student_attendance.toLowerCase() === 'present' ? 'present' : 'absent';
+                
+                html += `
+                    <div class="${cardClass}">
+                        <div class="card-header-badge">
+                            <span class="record-id-lbl">${r.record_id}</span>
+                            <span class="attendance-badge ${attendanceClass}">${r.student_attendance}</span>
+                        </div>
+                        <div class="card-title">${subjectVal}</div>
+                        
+                        <div class="card-details">
+                            <div class="detail-item">
+                                <span class="detail-lbl">Date</span>
+                                <span class="detail-val" ${dateClass}>${dateVal}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-lbl">Session</span>
+                                <span class="detail-val">${sessionVal}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-lbl">Room/Hall</span>
+                                <span class="detail-val" ${hallClass}>${hallVal}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-lbl">Seat No</span>
+                                <span class="detail-val ${!r.seat_no ? 'alert-val':''}" ${seatClass}>${seatVal}</span>
+                            </div>
+                            <div class="detail-item" style="grid-column: span 2;">
+                                <span class="detail-lbl">Invigilator</span>
+                                <span class="detail-val ${!r.invigilator ? 'alert-val':''}" ${staffClass}>${staffVal}</span>
+                            </div>
+                        </div>
+                        ${warningHtml}
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            container.innerHTML = html;
+            lucide.createIcons();
+        }
+
+        // Initialize metrics on page load
+        window.onload = initMetrics;
+    </script>
+</body>
+</html>
