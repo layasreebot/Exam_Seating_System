@@ -110,6 +110,10 @@ class ExamAssistantEngine:
         """
         Classifies the intent based on normalised query words and user role.
         Returns: intent_name (string) or None if unsure.
+        
+        Requirements:
+        - For strong match: 2+ keywords from the same intent
+        - For weak match: 1 keyword (subject to disambiguation)
         """
         words = normalised_query.split()
         if not words:
@@ -120,7 +124,8 @@ class ExamAssistantEngine:
             "get_seat_and_hall": ["seat", "seating", "sit", "places", "chair", "number", "hall", "room", "classroom", "where", "location", "go"],
             "get_exam_schedule": ["when", "date", "time", "schedule", "day", "calendar", "session", "morning", "afternoon", "hour"],
             "get_exam_subject": ["subject", "course", "exam", "test", "class", "write", "writing", "registered"],
-            "get_invigilator": ["invigilator", "teacher", "supervisor", "who", "staff", "monitoring", "supervising"]
+            "get_invigilator": ["invigilator", "teacher", "supervisor", "who", "staff", "monitoring", "supervising"],
+            "get_attendance": ["attendance", "attend", "present", "absent", "showed", "show", "appeared", "mark", "status", "there", "participate", "participation", "check", "presence", "record"]
         }
         
         invigilator_intents = {
@@ -142,20 +147,43 @@ class ExamAssistantEngine:
                 
         if not intent_scores:
             return None
-            
-        # Find the best matching intent
+        
+        # Strong match: 2+ keywords from same intent
+        # Weak match: 1 keyword (requires disambiguation below)
         sorted_intents = sorted(intent_scores.items(), key=lambda x: x[1], reverse=True)
         best_intent, best_score = sorted_intents[0]
         
-        # If there's a tie, let's check if the difference is clear or if we are unsure
+        # If best score is only 1 (single keyword), be more cautious
+        # Unless it's a very specific keyword
+        specific_keywords = {
+            "attendance", "attend", "seat", "seating", "invigilator", 
+            "hall", "subject", "course", "when", "where"
+        }
+        
+        if best_score == 1:
+            # Check if the single keyword is specific/strong enough
+            matched_words = []
+            for word in words:
+                for kw in target_intents[best_intent]:
+                    if word == kw or (len(kw) >= 4 and len(word) >= 3 and levenshtein_distance(word, kw) <= 1):
+                        if kw in specific_keywords:
+                            matched_words.append(kw)
+            
+            # Single keyword match is OK only if it's very specific
+            if not matched_words:
+                return None  # Weak match on generic keyword, refuse
+        
+        
+        # If there's a tie, try to disambiguate
         if len(sorted_intents) > 1 and sorted_intents[1][1] == best_score:
-            # Tie case: if the query contains very strong indicators for one specific intent, prioritize
-            # e.g., "where" vs "when"
+            # Tie case: try to disambiguate with very specific keywords
             if role == "Student":
                 if "where" in words or "seat" in words:
                     return "get_seat_and_hall"
                 if "when" in words or "date" in words:
                     return "get_exam_schedule"
+                if "attend" in words or "attendance" in words or "present" in words or "absent" in words:
+                    return "get_attendance"
             else:
                 if "where" in words or "hall" in words:
                     return "get_duty_hall"
@@ -172,7 +200,8 @@ class ExamAssistantEngine:
                 "Where is my seat / hall? (e.g., 'Where is my seat?')",
                 "When is my exam? (e.g., 'When is my exam?')",
                 "What subject am I writing? (e.g., 'What subject is my exam?')",
-                "Who is invigilating my exam? (e.g., 'Who is my invigilator?')"
+                "Who is invigilating my exam? (e.g., 'Who is my invigilator?')",
+                "Did I attend my exam? (e.g., 'Was I present for my exam?')"
             ]
         else:
             return [
@@ -199,8 +228,10 @@ class ExamAssistantEngine:
         if not intent:
             questions_list = "\n".join([f" - {q}" for q in self.get_supported_questions(user_role)])
             return False, (
-                "I am not confident of what you are asking. Please rephrase your question.\n"
-                f"Here are the questions I can answer for you:\n{questions_list}"
+                "I am not confident of what you are asking. I can only help with exam-related queries like seating, schedules, subjects, invigilators, and attendance.\n\n"
+                "Here are the questions I can answer for you:\n"
+                f"{questions_list}\n\n"
+                "For other inquiries, please contact the Exam Office."
             )
             
         # Fetch only the records belonging to the logged-in user
@@ -226,7 +257,7 @@ class ExamAssistantEngine:
             invigilator = r["invigilator"] if r["invigilator"] else "[Not Assigned Yet]"
             attendance = r["student_attendance"] if r["student_attendance"] else "[Unknown]"
             
-            # Format answers
+        # Format answers
             if intent == "get_seat_and_hall":
                 answers.append(
                     f"Exam {idx}: Your seat number is '{seat_no}' in '{hall}' for the '{subject}' exam."
@@ -242,6 +273,10 @@ class ExamAssistantEngine:
             elif intent == "get_invigilator":
                 answers.append(
                     f"Exam {idx}: The invigilator for your '{subject}' exam is '{invigilator}'."
+                )
+            elif intent == "get_attendance":
+                answers.append(
+                    f"Exam {idx}: Your attendance status for '{subject}' exam on '{exam_date}' is: {attendance}."
                 )
             elif intent == "get_duty_schedule":
                 answers.append(
